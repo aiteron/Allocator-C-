@@ -4,6 +4,10 @@
 
 using namespace std;
 
+
+#define BUFFER_SIZE 1024*1024
+
+
 template <typename T>
 struct AllocBuffer
 {
@@ -17,8 +21,6 @@ struct AllocBuffer
 
 template <typename T>
 struct mallocator {
-	const int BUFFER_SIZE = 1024 * 1024;
-
 	using value_type = T;
 	AllocBuffer<T>* rootBuffer;
 

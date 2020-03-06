@@ -8,12 +8,14 @@
 #include <time.h>  
 #include <string>
 
+#include "Mallocator.h"
 
 using namespace std;
 
-#include "Mallocator.h"
 
 #define FILENAME "big.txt"
+#define DELIM " ,._\t\n;:\r\"?-"
+
 
 struct cmpByChar
 {
@@ -53,7 +55,7 @@ void FrequencyWords_withCustomAlloc(bool print=false)
 
 	unsigned int start_time = clock(); // начальное время
 
-	char delim[] = " ,._\t\n;:\r";
+	char delim[] = DELIM;
 	char *next_token1 = NULL;
 	map<char*, size_t, cmpByChar, mallocator<pair<char*, size_t>>> words;
 
@@ -76,7 +78,7 @@ void FrequencyWords_withCustomAlloc(bool print=false)
 	if (print)
 	{
 		for (auto x : vec)
-		cout << x.first <<" "<< x.second << endl;
+			cout << x.first <<" "<< x.second << endl;
 	}
 	
 	unsigned int end_time = clock(); // конечное время
@@ -92,7 +94,7 @@ void FrequencyWords_withStandardAlloc(bool print = false)
 
 	unsigned int start_time = clock(); // начальное время
 
-	char delim[] = " ,._\t\n;:\r";
+	char delim[] = DELIM;
 	char *next_token1 = NULL;
 	map<string, size_t> words;
 
