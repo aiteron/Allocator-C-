@@ -43,26 +43,26 @@ struct mallocator {
 template <typename T>
 mallocator<T>::mallocator() {
 	rootBuffer = nullptr;
-	cout << "Allocator created: " << (int)this << "\n";
+	//cout << "Allocator created: " << (int)this << "\n";
 };
 
 
 template <typename T>
 mallocator<T>::~mallocator()
 {
-	cout << "delete alloc: " << int(this) << "\n";
+	//cout << "delete alloc: " << int(this) << "\n";
 	rootBuffer->ptr_counter--;
 
 	if (rootBuffer->ptr_counter == 0)
 	{
-		cout << "Start delete buffers\n";
+		//cout << "Start delete buffers\n";
 
 		auto currBuff = rootBuffer;
 
 		while (currBuff != nullptr)
 		{
 			auto next = currBuff->next;
-			cout << "delete buff: " << currBuff << endl;
+			//cout << "delete buff: " << currBuff << endl;
 			free(currBuff);
 			currBuff = next;
 		}
@@ -72,10 +72,10 @@ mallocator<T>::~mallocator()
 template <typename T>
 AllocBuffer<T>* mallocator<T>::createBuffer()
 {
-	cout << "create Buffer = ";
+	//cout << "create Buffer = ";
 	auto ptr = malloc(sizeof(AllocBuffer<T>) + BUFFER_SIZE);
 	if (ptr) {
-		cout << ptr << '\n';
+		//cout << ptr << '\n';
 
 		AllocBuffer<T>* buff_ptr = reinterpret_cast<AllocBuffer<T>*>(ptr);
 		buff_ptr->size = BUFFER_SIZE;
@@ -86,7 +86,7 @@ AllocBuffer<T>* mallocator<T>::createBuffer()
 
 		return	buff_ptr;
 	}
-	cout << "[bad_alloc_buff]\n";
+	//cout << "[bad_alloc_buff]\n";
 	throw std::bad_alloc();
 };
 
@@ -97,7 +97,7 @@ T* mallocator<T>::PlaceInBuffer(AllocBuffer<T>* buffer, int n)
 
 	if (size > buffer->size)
 	{
-		cout << "[big_memory_needs]\n";
+		//cout << "[big_memory_needs]\n";
 		throw std::bad_alloc();
 	}
 
@@ -106,7 +106,7 @@ T* mallocator<T>::PlaceInBuffer(AllocBuffer<T>* buffer, int n)
 		auto ptr = reinterpret_cast<T*>(buffer->mem + buffer->offset);
 
 		buffer->offset += size;
-		cout << "Placed " << size << " bytes by alloc: " << int(this) << "\n";
+		//cout << "Placed " << size << " bytes by alloc: " << int(this) << "\n";
 
 		return ptr;
 	}
@@ -149,5 +149,5 @@ template <class U>
 mallocator<T>::mallocator(mallocator<U>& other) {
 	rootBuffer = (AllocBuffer<T>*)other.rootBuffer;
 	rootBuffer->ptr_counter++;														// Проблемы с многопоточностью?
-	cout << "copy to " << (int)this << " from " << (int)&other << "\n";
+	//cout << "copy to " << (int)this << " from " << (int)&other << "\n";
 }
