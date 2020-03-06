@@ -1,33 +1,59 @@
 #include <iostream>
 #include <map>
-#include <functional>
-#include <string>
 #include <conio.h>
-#include <memory>
-#include <stdio.h>
+#include <Windows.h>
 
 using namespace std;
 
 #include "Mallocator.h"
 
-struct cmpByInt
+struct word
 {
-	bool operator()(const int& a, const int&b) const
+	char* ptr;
+	size_t len;
+};
+
+struct cmpByChar
+{
+	bool operator()(const string& a, const string& b) const
 	{
-		return a < b;
+		return a.compare(b);
 	}
 };
 
 int main()
 {
-	//cout << "Hell";
+	auto hFile = CreateFile("source.txt", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	auto m = map<int, int, cmpByInt, mallocator<pair<int, int>>>();
+	LARGE_INTEGER lFileSize;
+	GetFileSizeEx(hFile, &lFileSize);
+	char* ReadBuffer = new char[lFileSize.QuadPart + 1];
 
-	m[5] = 4;
-	m[2] = 1;
 
-	m.~map();
+	DWORD nRead;
+	if (FALSE == ReadFile(hFile, ReadBuffer, lFileSize.QuadPart, &nRead, NULL))
+	{
+		printf("Terminal failure: Unable to read from file.\n GetLastError=%08x\n", GetLastError());
+		CloseHandle(hFile);
+
+		delete ReadBuffer;
+		return 0;
+	}
+
+	CloseHandle(hFile);
+
+	cout << ReadBuffer;
+	
+/*
+	char a[] = "fgsfdg";
+
+	auto m = map<char*, int, cmpByChar, mallocator<pair<char*, int>>>();
+
+	m[a] = 4;
+
+	m.~map();*/
+
+	delete ReadBuffer;
 
 	_getch();
 
