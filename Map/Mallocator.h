@@ -62,7 +62,7 @@ mallocator<T>::~mallocator()
 		while (currBuff != nullptr)
 		{
 			auto next = currBuff->next;
-			//cout << "delete buff: " << currBuff << endl;
+			cout << "delete buff: " << currBuff << endl;
 			free(currBuff);
 			currBuff = next;
 		}
@@ -72,10 +72,10 @@ mallocator<T>::~mallocator()
 template <typename T>
 AllocBuffer<T>* mallocator<T>::createBuffer()
 {
-	//cout << "create Buffer = ";
+	cout << "create Buffer = ";
 	auto ptr = malloc(sizeof(AllocBuffer<T>) + BUFFER_SIZE);
 	if (ptr) {
-		//cout << ptr << '\n';
+		cout << ptr << '\n';
 
 		AllocBuffer<T>* buff_ptr = reinterpret_cast<AllocBuffer<T>*>(ptr);
 		buff_ptr->size = BUFFER_SIZE;

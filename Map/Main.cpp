@@ -13,6 +13,7 @@ using namespace std;
 
 #include "Mallocator.h"
 
+#define FILENAME "big.txt"
 
 struct cmpByChar
 {
@@ -24,11 +25,13 @@ struct cmpByChar
 
 char* GetText()
 {
-	auto hFile = CreateFile("source.txt", GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	auto hFile = CreateFile(FILENAME, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	LARGE_INTEGER lFileSize;
 	GetFileSizeEx(hFile, &lFileSize);
 	char* ReadBuffer = new char[lFileSize.QuadPart + 1];
+
+	cout << "File size: " << lFileSize.QuadPart << endl;
 
 	DWORD nRead;
 	if (FALSE == ReadFile(hFile, ReadBuffer, lFileSize.QuadPart, &nRead, NULL))
