@@ -24,7 +24,6 @@ struct mallocator {
 
 	mallocator();
 
-
 	template <class U>
 	mallocator(mallocator<U>& other);
 
@@ -39,8 +38,10 @@ struct mallocator {
 	void deallocate(T* ptr, std::size_t n) {}
 };
 
+
+
 template <typename T>
-mallocator<T>::mallocator(){
+mallocator<T>::mallocator() {
 	rootBuffer = nullptr;
 	cout << "Allocator created: " << (int)this << "\n";
 };

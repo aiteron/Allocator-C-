@@ -10,7 +10,6 @@ using namespace std;
 
 #include "Mallocator.h"
 
-
 struct cmpByInt
 {
 	bool operator()(const int& a, const int&b) const
