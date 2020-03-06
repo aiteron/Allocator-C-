@@ -39,10 +39,24 @@ int main()
 		delete ReadBuffer;
 		return 0;
 	}
-
 	CloseHandle(hFile);
 
-	cout << ReadBuffer;
+	char test[] = "I have, some!*interesting story.    f";
+
+	char delim[] = " ,.\t\n;:";
+	char *next_token1 = NULL;
+
+	char *ptr = strtok_s(ReadBuffer, delim, &next_token1);
+
+	while (ptr != NULL)
+	{
+		//printf("'%s'\n", ptr);
+		cout << ptr << endl;
+		ptr = strtok_s(NULL, delim, &next_token1);
+	}
+
+	//cout << ReadBuffer;
+
 	
 /*
 	char a[] = "fgsfdg";
