@@ -1,7 +1,12 @@
 #include <iostream>
 #include <map>
 #include <conio.h>
+#include <vector>
 #include <Windows.h>
+#include <algorithm>
+#include "stdlib.h" 
+#include <time.h>  
+
 
 using namespace std;
 
@@ -15,9 +20,9 @@ struct word
 
 struct cmpByChar
 {
-	bool operator()(const string& a, const string& b) const
+	bool operator()(const char* a, const char* b) const
 	{
-		return a.compare(b);
+		return strcmp(a, b) == -1;
 	}
 };
 
@@ -41,19 +46,41 @@ int main()
 	}
 	CloseHandle(hFile);
 
-	char test[] = "I have, some!*interesting story.    f";
+	unsigned int start_time = clock(); // начальное время
 
-	char delim[] = " ,.\t\n;:";
+	char delim[] = " ,._\t\n;:\r";
 	char *next_token1 = NULL;
 
 	char *ptr = strtok_s(ReadBuffer, delim, &next_token1);
 
+	map<char*, size_t, cmpByChar> words;
+
+	
+
 	while (ptr != NULL)
 	{
+		_strlwr_s(ptr, strlen(ptr) + 1);
+		words[ptr]++;
 		//printf("'%s'\n", ptr);
-		cout << ptr << endl;
+		//cout << ptr << endl;
 		ptr = strtok_s(NULL, delim, &next_token1);
 	}
+
+
+	vector<pair<char*, int>>vec;
+	for (auto x = words.begin(); x != words.end(); x++)
+		vec.push_back(*x);
+	sort(vec.begin(), vec.end(), [](pair<char*, int>elem1, pair<char*, int>elem2) {return elem1.second > elem2.second; });
+	
+	/*for (auto x : vec)
+		cout << x.first <<" "<< x.second << endl;*/
+
+
+	unsigned int end_time = clock(); // конечное время
+
+
+
+	cout << "Длительность процесса: " << end_time - start_time;
 
 	//cout << ReadBuffer;
 
